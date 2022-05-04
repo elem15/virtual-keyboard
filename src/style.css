@@ -1,0 +1,10 @@
+body {
+    background-color:rgb(199, 194, 194);
+}
+button{ 
+    background-color: burlywood;
+}
+.hello {
+    color:rgb(0, 46, 0);  
+    font-family: 'Courier New', Courier, monospace;      
+}
