@@ -1,5 +1,6 @@
 import State from "./state";
 import keyboard from "./keyboard";
+import typing from "./typing";
 import "./style.css";
 
 
@@ -29,13 +30,5 @@ function renderCanvas() {
 
 
 document.body.appendChild(renderCanvas());
-function typing(state) {
-    const textArea = document.querySelector(".textarea");
-    textArea.value = "123";
-    const keyboardContainer = document.querySelector(".keyboardContainer");
-    keyboardContainer.addEventListener("click", (e) => {
-        const char = e.target.getAttribute("data-type");
-        textArea.value = textArea.value + char;
-    });
-}
+
 typing(state);

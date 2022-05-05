@@ -9,6 +9,12 @@ export default class {
     setRegister(register) {
         this.register = register;
     }
+    getLayout() {
+        return this.layout;
+    }
+    getRegister(register) {
+        return this.register;
+    }
     print() {
         return this[this.layout][this.register];
     }
@@ -16,24 +22,40 @@ export default class {
         lower: [
             "`",
             "1",
-            "Shift"
+            "q",
+            "Caps",
+            "Shift", 
+            "Ctrl",
+            "Alt",
         ],
         upper: [
             "~",
             "!",
-            "Shift"
+            "Q",
+            "Caps",
+            "Shift", 
+            "Ctrl",
+            "Alt",
         ]
     };
     russian = {
         lower: [
             "ё",
+            "ц",
             "1",
-            "Shift"
+            "Caps",
+            "Shift", 
+            "Ctrl",
+            "Alt",
         ],
         upper: [
             "Ё",
+            "Ц",
             "!",
-            "Shift"
+            "Caps",
+            "Shift", 
+            "Ctrl",
+            "Alt",
         ]
     };
 }
