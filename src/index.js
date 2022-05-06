@@ -3,8 +3,10 @@ import keyboard from "./keyboard";
 import typing from "./typing";
 import "./style.css";
 
-
 const state = new State();
+let layout = localStorage.getItem("layout");
+layout = layout ?? "english";
+state.setLayout(layout);
 
 function renderCanvas() {
     const container = document.createElement("div");
@@ -27,7 +29,6 @@ function renderCanvas() {
 
     return container;
 }
-
 
 document.body.appendChild(renderCanvas());
 

@@ -37,6 +37,7 @@ export default function typing(state) {
                 if (localState.ctrlPressed === true) {
                     let layout = state.getLayout() === "english" ? "russian" : "english";
                     state.setLayout(layout);
+                    localStorage.setItem("layout", layout);
                     keyboardContainer.innerHTML = "";                    
                     keyboardContainer.appendChild(keyboard(state, localState.capsLockPressed));
                     localState.ctrlPressed = false;
@@ -95,13 +96,9 @@ export default function typing(state) {
                     }
                 }
                 posFromStrBegin = posFromStrBegin ?? 0;
-                nextPosition = nextPosition ?? 0;
-                console.log(nextPosition);
-                console.log(posFromStrBegin);                
-                console.log(pos);
+                nextPosition = nextPosition ?? 0;          
                 let newPosition = nextPosition + (pos - posFromStrBegin);
                 newPosition = newPosition >= posFromStrBegin ? posFromStrBegin  : newPosition;
-                console.log(newPosition);
                 textArea.setRangeText("", newPosition, newPosition, "end");
                 ctrl.classList.remove("active");      
             } else if (char === "▼") {
@@ -114,13 +111,9 @@ export default function typing(state) {
                         posFromStrBegin = i === 0 ? -1 : i;
                     }
                 }
-                posFromStrBegin = posFromStrBegin ?? -1;
-                console.log(nextPosition);
-                console.log(posFromStrBegin);                
-                console.log(pos);
+                posFromStrBegin = posFromStrBegin ?? -1;          
                 let newPosition = nextPosition >= 0 ? nextPosition + (pos - posFromStrBegin) : value.length;
                 newPosition = newPosition >= value.length ? value.length : newPosition;
-                console.log(newPosition);
                 textArea.setRangeText("", newPosition, newPosition, "end");
                 ctrl.classList.remove("active");      
             }
