@@ -22,7 +22,7 @@ function renderCanvas() {
     container.appendChild(keyboardContainer);
     const footer = document.createElement("div");
     footer.className = "footer";
-    footer.innerText = "Designed for Windows. \n Press Ctrl+Alt to switch language.";
+    footer.innerText = "Designed for Windows. \n Press left Ctrl+Alt to switch language.";
     container.appendChild(footer);
 
     return container;

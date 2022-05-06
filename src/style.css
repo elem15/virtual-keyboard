@@ -31,6 +31,7 @@ body {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 3px ;
+    
 }
 .btn{ 
     min-width: 40px;
@@ -41,6 +42,12 @@ body {
     font-weight: bold;
     border-radius: 4px;
     position: relative;
+    box-shadow: 5px 5px 5px burlywood;    
+}
+.btn:hover {
+    cursor: pointer;
+    background-color: rgb(239, 133, 57);
+    border-radius: 5px;
 }
 .Tab {
     background-color: rgb(213, 109, 35);
@@ -83,7 +90,13 @@ body {
     background-color: rgb(213, 109, 35);
 }
 .active {
-    background-color: chocolate;
+    background-color: rgb(239, 133, 57);
+    border-radius: 5px;
+    top: 2px;
+    left: 2px;
+}
+.clicked {
+    background-color: rgb(239, 133, 57);
     border-radius: 5px;
     top: 2px;
     left: 2px;

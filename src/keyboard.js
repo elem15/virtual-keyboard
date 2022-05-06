@@ -13,6 +13,15 @@ export default function keyboard(state, isCapsLock) {
             button.innerText = item;
             button.setAttribute("data-type", item);
             button.classList.add(item);
+            button.addEventListener("mousedown", () => {
+                button.classList.add("clicked");
+            });
+            button.addEventListener("mouseup", () => {
+                button.classList.remove("clicked");
+            });
+            button.addEventListener("mouseout", () => {
+                button.classList.remove("clicked");
+            });
             element.appendChild(button);
         });
         return element;
