@@ -17,7 +17,7 @@ function renderCanvas() {
     textArea.className = "textarea";
     container.appendChild(textArea);
     const keyboardContainer = document.createElement("div");
-    keyboardContainer.className = "keyboardContainer";
+    keyboardContainer.className = "keyboard-container";
     keyboardContainer.appendChild(keyboard(state));
     container.appendChild(keyboardContainer);
     const footer = document.createElement("div");

@@ -8,7 +8,7 @@ export default function typing(state) {
     };
     const textArea = document.querySelector(".textarea");
     textArea.value = "123";
-    const keyboardContainer = document.querySelector(".keyboardContainer");
+    const keyboardContainer = document.querySelector(".keyboard-container");
     keyboardContainer.addEventListener("click", (e) => {
         const ctrl = document.querySelector("[data-type=Ctrl]");
 
