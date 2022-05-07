@@ -4,7 +4,6 @@ export default function typing(state) {
     const localState = {
         shiftPressed: false,
         ctrlPressed: false,
-        capsLockPressed: false,
     };
     const textArea = document.querySelector(".textarea");
     const keyboardContainer = document.querySelector(".keyboard-container");
@@ -17,16 +16,16 @@ export default function typing(state) {
                 textArea.setRangeText(char, textArea.selectionStart, textArea.selectionEnd, "end");
                 ctrl.classList.remove("active");
                 const caps = document.querySelector("[data-type=Caps]");
-                if(localState.capsLockPressed) caps.classList.add("active");
+                if(state.isCapsLock) caps.classList.add("active");
                 
                 if (localState.shiftPressed === true) {                    
                     localState.shiftPressed = !localState.shiftPressed;
                     let register = state.getRegister() === "lower" ? "upper" : "lower";
                     state.setRegister(register);
                     keyboardContainer.innerHTML = "";                    
-                    keyboardContainer.appendChild(keyboard(state, localState.capsLockPressed));
+                    keyboardContainer.appendChild(keyboard(state));
                     const caps = document.querySelector("[data-type=Caps]");
-                    if(localState.capsLockPressed) caps.classList.add("active");
+                    if(state.isCapsLock) caps.classList.add("active");
                     const shift = document.querySelector("[data-type=Shift]");
                     shift.classList.remove("active");
                 }
@@ -39,28 +38,28 @@ export default function typing(state) {
                     state.setLayout(layout);
                     localStorage.setItem("layout", layout);
                     keyboardContainer.innerHTML = "";                    
-                    keyboardContainer.appendChild(keyboard(state, localState.capsLockPressed));
+                    keyboardContainer.appendChild(keyboard(state));
                     localState.ctrlPressed = false;
                     const caps = document.querySelector("[data-type=Caps]");
-                    if(localState.capsLockPressed) caps.classList.add("active");
+                    if(state.isCapsLock) caps.classList.add("active");
                 }
             } else if (char === "Shift") {
                 let register = state.getRegister() === "lower" ? "upper" : "lower";
                 state.setRegister(register);
                 keyboardContainer.innerHTML = "";       
-                keyboardContainer.appendChild(keyboard(state, localState.capsLockPressed));
+                keyboardContainer.appendChild(keyboard(state));
                 const shift = document.querySelectorAll("[data-type=Shift]");
                 localState.shiftPressed = !localState.shiftPressed;
                 const caps = document.querySelector("[data-type=Caps]");
-                if(localState.capsLockPressed) caps.classList.add("active");
+                if(state.isCapsLock) caps.classList.add("active");
                 if(localState.shiftPressed) (shift.forEach(item => item.classList.add("active")));
                 else shift.forEach(item => item.classList.remove("active"));
             } else if (char === "Caps") {
-                localState.capsLockPressed = !localState.capsLockPressed;
+                state.isCapsLock = !state.isCapsLock;
                 keyboardContainer.innerHTML = "";                    
-                keyboardContainer.appendChild(keyboard(state, localState.capsLockPressed));
+                keyboardContainer.appendChild(keyboard(state));
                 const caps = document.querySelector("[data-type=Caps]");
-                if(localState.capsLockPressed) caps.classList.add("active");
+                if(state.isCapsLock) caps.classList.add("active");
                 else caps.classList.remove("active");
             } else if (char === "Tab") {
                 textArea.setRangeText("\t", textArea.selectionStart, textArea.selectionEnd, "end");

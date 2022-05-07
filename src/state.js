@@ -2,6 +2,7 @@ export default class {
     constructor() {
         this.layout = "english";
         this.register = "lower";
+        this.isCapsLock = false;
     }
     setLayout(layout) {
         this.layout = layout;

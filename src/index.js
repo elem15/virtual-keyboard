@@ -1,6 +1,7 @@
 import State from "./state";
 import keyboard from "./keyboard";
 import typing from "./typing";
+import realKeyboard from "./real-keyboard";
 import "./style.css";
 
 const state = new State();
@@ -33,3 +34,4 @@ function renderCanvas() {
 document.body.appendChild(renderCanvas());
 
 typing(state);
+realKeyboard(state);
