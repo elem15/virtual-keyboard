@@ -11,7 +11,9 @@ export default function keyboard(state) {
             } else if (state.isCapsLock && item.length === 1 && /[A-Z]|[А-ЯЁ]/.test(item)) {
                 item = item.toLowerCase();
             }
-            button.innerText = item;
+            if (item === "Backslash") button.innerText = "\u005C";
+            else if (item === "Quote") button.innerText = '"';
+            else button.innerText = item;
             button.setAttribute("data-type", item);
             button.classList.add(item);
             button.addEventListener("mousedown", () => {
