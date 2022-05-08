@@ -1,11 +1,6 @@
 import keyboard from "./keyboard";
 
-export default function typing(state) {
-    const localState = {
-        shiftPressed: false,
-        ctrlPressed: false,
-        capsLockPressed: false,
-    };
+export default function typing(state) {   
     const textArea = document.querySelector(".textarea");
     const keyboardContainer = document.querySelector(".keyboard-container");
     keyboardContainer.addEventListener("click", (e) => {
@@ -17,50 +12,50 @@ export default function typing(state) {
                 textArea.setRangeText(char, textArea.selectionStart, textArea.selectionEnd, "end");
                 ctrl.classList.remove("active");
                 const caps = document.querySelector("[data-type=Caps]");
-                if(localState.capsLockPressed) caps.classList.add("active");
+                if (state.isCapsLock) caps.classList.add("active");
                 
-                if (localState.shiftPressed === true) {                    
-                    localState.shiftPressed = !localState.shiftPressed;
+                if (state.shiftPressed === true) {
+                    state.shiftPressed = !state.shiftPressed;
                     let register = state.getRegister() === "lower" ? "upper" : "lower";
                     state.setRegister(register);
-                    keyboardContainer.innerHTML = "";                    
-                    keyboardContainer.appendChild(keyboard(state, localState.capsLockPressed));
+                    keyboardContainer.innerHTML = "";
+                    keyboardContainer.appendChild(keyboard(state));
                     const caps = document.querySelector("[data-type=Caps]");
-                    if(localState.capsLockPressed) caps.classList.add("active");
+                    if (state.isCapsLock) caps.classList.add("active");
                     const shift = document.querySelector("[data-type=Shift]");
                     shift.classList.remove("active");
                 }
             } else if (char === "Ctrl") {
-                localState.ctrlPressed = true;
+                state.ctrlPressed = true;
                 e.target.classList.toggle("active");
             } else if (char === "Alt") {
-                if (localState.ctrlPressed === true) {
+                if (state.ctrlPressed === true) {
                     let layout = state.getLayout() === "english" ? "russian" : "english";
                     state.setLayout(layout);
                     localStorage.setItem("layout", layout);
-                    keyboardContainer.innerHTML = "";                    
-                    keyboardContainer.appendChild(keyboard(state, localState.capsLockPressed));
-                    localState.ctrlPressed = false;
+                    keyboardContainer.innerHTML = "";
+                    keyboardContainer.appendChild(keyboard(state, state.isCapsLock));
+                    state.ctrlPressed = false;
                     const caps = document.querySelector("[data-type=Caps]");
-                    if(localState.capsLockPressed) caps.classList.add("active");
+                    if (state.isCapsLock) caps.classList.add("active");
                 }
             } else if (char === "Shift") {
                 let register = state.getRegister() === "lower" ? "upper" : "lower";
                 state.setRegister(register);
-                keyboardContainer.innerHTML = "";       
-                keyboardContainer.appendChild(keyboard(state, localState.capsLockPressed));
+                keyboardContainer.innerHTML = "";
+                keyboardContainer.appendChild(keyboard(state, state.isCapsLock));
                 const shift = document.querySelectorAll("[data-type=Shift]");
-                localState.shiftPressed = !localState.shiftPressed;
+                state.shiftPressed = !state.shiftPressed;
                 const caps = document.querySelector("[data-type=Caps]");
-                if(localState.capsLockPressed) caps.classList.add("active");
-                if(localState.shiftPressed) (shift.forEach(item => item.classList.add("active")));
+                if (state.isCapsLock) caps.classList.add("active");
+                if (state.shiftPressed) (shift.forEach(item => item.classList.add("active")));
                 else shift.forEach(item => item.classList.remove("active"));
             } else if (char === "Caps") {
-                localState.capsLockPressed = !localState.capsLockPressed;
-                keyboardContainer.innerHTML = "";                    
-                keyboardContainer.appendChild(keyboard(state, localState.capsLockPressed));
+                state.isCapsLock = !state.isCapsLock;
+                keyboardContainer.innerHTML = "";
+                keyboardContainer.appendChild(keyboard(state, state.isCapsLock));
                 const caps = document.querySelector("[data-type=Caps]");
-                if(localState.capsLockPressed) caps.classList.add("active");
+                if (state.isCapsLock) caps.classList.add("active");
                 else caps.classList.remove("active");
             } else if (char === "Tab") {
                 textArea.setRangeText("\t", textArea.selectionStart, textArea.selectionEnd, "end");
@@ -70,6 +65,12 @@ export default function typing(state) {
                 ctrl.classList.remove("active");
             } else if (char === "Del") {
                 textArea.setRangeText("", textArea.selectionStart, textArea.selectionEnd + 1, "end");
+                ctrl.classList.remove("active");
+            } else if (char === "Backslash") {
+                textArea.setRangeText("\u005C", textArea.selectionStart, textArea.selectionEnd, "end");
+                ctrl.classList.remove("active");
+            } else if (char === "Quote") {
+                textArea.setRangeText('"', textArea.selectionStart, textArea.selectionEnd, "end");
                 ctrl.classList.remove("active");
             } else if (char === "Whitespace") {
                 textArea.setRangeText(" ", textArea.selectionStart, textArea.selectionEnd, "end");

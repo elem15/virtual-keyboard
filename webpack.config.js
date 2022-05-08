@@ -2,18 +2,18 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-    mode: "development",  
+    mode: "production",
     entry: {
         index: "./src/index.js",
     },
-    devtool: "inline-source-map",
+    devtool: "source-map",
     devServer: {
         static: "./dist",
     },
     plugins: [
         new HtmlWebpackPlugin({
             title: "Virtual Keyboard",
-        }),
+        }),   
     ],
     module: {
         rules: [
@@ -21,7 +21,18 @@ module.exports = {
                 test: /\.css$/i,
                 use: ["style-loader", "css-loader"],
             },
-        ],
+            {
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            }
+
+        ]
     },
     output: {
         filename: "bundle.js",

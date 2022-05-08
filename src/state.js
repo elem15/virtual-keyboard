@@ -2,6 +2,9 @@ export default class {
     constructor() {
         this.layout = "english";
         this.register = "lower";
+        this.isCapsLock = false;
+        this.shiftPressed = false;
+        this.ctrlPressed = false;
     }
     setLayout(layout) {
         this.layout = layout;
@@ -26,7 +29,7 @@ export default class {
             "=", "Backspace", "Tab", "q",
             "w", "e", "r", "t",
             "y", "u", "i", "o",
-            "p", "[", "]", "\u005C",
+            "p", "[", "]", "Backslash",
             "Del",
             "Caps", "a", "s", "d",
             "f", "g", "h", "j",
@@ -49,7 +52,7 @@ export default class {
             "Del", "Caps", "A", "S",
             "D", "F", "G", "H",
             "J", "K", "L", ";",
-            '"', "Enter", "Shift", "Z",
+            "Quote", "Enter", "Shift", "Z",
             "X", "C", "V", "B",
             "N", "M", "<", ">",
             "?", "▲", "Shift", "Ctrl",
@@ -65,7 +68,7 @@ export default class {
             "=", "Backspace", "Tab", "й",
             "ц", "у", "к", "е",
             "н", "г", "ш", "щ",
-            "з", "х", "ъ", "\u005C",
+            "з", "х", "ъ", "Backslash",
             "Del", "Caps", "ф", "ы",
             "в", "а", "п", "р",
             "о", "л", "д", "ж",
