@@ -52,18 +52,23 @@ const keyList = {
     KeyM: ["m", "M", "ь", "Ь"],
     Comma: [",", "<", "б", "Б"],
     Period: [".", ">", "ю", "Ю"],
+    Slash: ["/", "?", ".", ","],
     ArrowUp: ["▲", "▲", "▲", "▲",],
     ArrowLeft: ["◄", "◄", "◄", "◄",],
     ArrowDown: ["▼", "▼", "▼", "▼",],
     ArrowRight: ["►", "►", "►", "►",],
+    ControlLeft: ["Ctrl", "Ctrl", "Ctrl", "Ctrl",],
+    AltLeft: ["Alt", "Alt", "Alt", "Alt",],
+    ControlRight: ["Ctrl", "Ctrl", "Ctrl", "Ctrl",],
+    AltRight: ["Alt", "Alt", "Alt", "Alt",],
+    MetaLeft: ["Win", "Win", "Win", "Win",],
+    Space: ["Whitespace", "Whitespace", "Whitespace", "Whitespace",]
 };
 
-export default function (state) {   
+export default function (state) {
     const textArea = document.querySelector(".textarea");
     const keyboardContainer = document.querySelector(".keyboard-container");
     document.addEventListener("keydown", (e) => {
-        console.log(e.code);
-
         const key = keyList[e.code];
         if (e.code === "CapsLock") {
             e.preventDefault();
@@ -80,8 +85,21 @@ export default function (state) {
             || e.code === "ArrowDown"
             || e.code === "ArrowLeft"
             || e.code === "ArrowRight"
+            || e.code === "AltLeft"
+            || e.code === "ControlLeft"
+            || e.code === "Space"
         ) {
             const button = document.querySelector("." + key);
+            button.classList.add("clicked");
+        } else if (e.code === "AltRight") {
+            const button = document.querySelectorAll("." + key)[1];
+            button.classList.add("clicked");
+        } else if (e.code === "ControlRight") {
+            const button = document.querySelectorAll("." + key)[1];
+            button.classList.add("clicked");
+        } else if (e.code === "MetaLeft") {
+            e.preventDefault();
+            const button = document.querySelector(".Win");
             button.classList.add("clicked");
         } else if (e.code === "Tab") {
             e.preventDefault();
@@ -116,7 +134,10 @@ export default function (state) {
                 ?? document.querySelector(`[data-type="${key[2]}"]`)
                 ?? document.querySelector(`[data-type="${key[3]}"]`);
             button.classList.add("clicked");
-            const char = button.getAttribute("data-type");
+            let char = button.getAttribute("data-type");
+            if (e.code === "Slash" && state.layout === "russian" && state.register === "upper") {
+                char = ",";
+            }
             textArea.setRangeText(char, textArea.selectionStart, textArea.selectionEnd, "end");
             if (state.shiftPressed === true) {
                 state.shiftPressed = !state.shiftPressed;
@@ -133,6 +154,14 @@ export default function (state) {
     });
     document.addEventListener("keyup", (e) => {
         const key = keyList[e.code];
+        if (e.code === "AltRight") {
+            const button = document.querySelectorAll("." + key)[1];
+            button.classList.remove("clicked");
+        }
+        if (e.code === "ControlRight") {
+            const button = document.querySelectorAll("." + key)[1];
+            button.classList.remove("clicked");
+        }
         if (Object.keys(keyList).includes(e.code)) {
             e.preventDefault();
             const button = document.querySelector(`[data-type="${key[0]}"]`)
@@ -142,6 +171,40 @@ export default function (state) {
             button.classList.remove("clicked");
         }
     });
+    let pressed = new Set();
+    function switchLayout() {
+        const codes = ["ControlLeft", "AltLeft"]
+        document.addEventListener("keydown", (e) => {
+            pressed.add(e.code);
+            for (let code of codes) {
+                if (!pressed.has(code)) return;
+            }
+            let layout = state.getLayout() === "english" ? "russian" : "english";
+            state.setLayout(layout);
+            localStorage.setItem("layout", layout);
+            keyboardContainer.innerHTML = "";
+            keyboardContainer.appendChild(keyboard(state));
+            if (pressed.has("AltLeft")) {
+                const button = document.querySelector(".Alt");
+                button.classList.add("active");
+            }
+            if (pressed.has("ControlLeft")) {
+                const button = document.querySelector(".Ctrl");
+                button.classList.add("active");
+            }
+            state.ctrlPressed = false;
+            const caps = document.querySelector("[data-type=Caps]");
+            if (state.isCapsLock) caps.classList.add("active");
+            pressed.clear();
+        });
+        document.addEventListener("keyup", function (event) {
+            pressed.delete(event.code);
+            const alt = document.querySelector(".Alt");
+            const ctrl = document.querySelector(".Ctrl");
+            alt.classList.remove("active");
+            ctrl.classList.remove("active");
+        });
+    }
+    switchLayout();
     textArea.focus();
 }
-     
