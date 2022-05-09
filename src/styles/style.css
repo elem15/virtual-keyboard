@@ -42,6 +42,7 @@ body {
     border-radius: 4px;
     position: relative;
     box-shadow: 5px 5px 5px burlywood;    
+    transition: all .3s;
 }
 .btn:hover {
     cursor: pointer;
