@@ -10,7 +10,8 @@ export default function typing(state) {
             const char = e.target.getAttribute("data-type");
             if (char.length === 1 && char !== "◄" && char !== "►" && char !== "▲" && char !== "▼") {
                 textArea.setRangeText(char, textArea.selectionStart, textArea.selectionEnd, "end");
-                ctrl.classList.remove("active");
+                const controls = document.querySelectorAll(".Ctrl");
+                controls.forEach(item => item.classList.remove("active"));
                 const caps = document.querySelector("[data-type=Caps]");
                 if (state.isCapsLock) caps.classList.add("active");
 
