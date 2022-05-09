@@ -1,19 +1,19 @@
-import keyboard from "./keyboard";
+import keyboard from "./keyboard-render";
 
-export default function typing(state) {   
+export default function typing(state) {
     const textArea = document.querySelector(".textarea");
     const keyboardContainer = document.querySelector(".keyboard-container");
     keyboardContainer.addEventListener("click", (e) => {
         const ctrl = document.querySelector("[data-type=Ctrl]");
 
-        if (e.target.getAttribute("data-type")) { 
+        if (e.target.getAttribute("data-type")) {
             const char = e.target.getAttribute("data-type");
             if (char.length === 1 && char !== "◄" && char !== "►" && char !== "▲" && char !== "▼") {
                 textArea.setRangeText(char, textArea.selectionStart, textArea.selectionEnd, "end");
                 ctrl.classList.remove("active");
                 const caps = document.querySelector("[data-type=Caps]");
                 if (state.isCapsLock) caps.classList.add("active");
-                
+
                 if (state.shiftPressed === true) {
                     state.shiftPressed = !state.shiftPressed;
                     let register = state.getRegister() === "lower" ? "upper" : "lower";
@@ -34,7 +34,7 @@ export default function typing(state) {
                     state.setLayout(layout);
                     localStorage.setItem("layout", layout);
                     keyboardContainer.innerHTML = "";
-                    keyboardContainer.appendChild(keyboard(state, state.isCapsLock));
+                    keyboardContainer.appendChild(keyboard(state));
                     state.ctrlPressed = false;
                     const caps = document.querySelector("[data-type=Caps]");
                     if (state.isCapsLock) caps.classList.add("active");
@@ -42,18 +42,22 @@ export default function typing(state) {
             } else if (char === "Shift") {
                 let register = state.getRegister() === "lower" ? "upper" : "lower";
                 state.setRegister(register);
+                let shift = document.querySelectorAll(".Shift");
+                let count = 0;
+                let target = e.target;
+                if (target === shift[1]) count = 1;
                 keyboardContainer.innerHTML = "";
-                keyboardContainer.appendChild(keyboard(state, state.isCapsLock));
-                const shift = document.querySelectorAll("[data-type=Shift]");
+                keyboardContainer.appendChild(keyboard(state));
+                shift = document.querySelectorAll(".Shift");
                 state.shiftPressed = !state.shiftPressed;
                 const caps = document.querySelector("[data-type=Caps]");
                 if (state.isCapsLock) caps.classList.add("active");
-                if (state.shiftPressed) (shift.forEach(item => item.classList.add("active")));
+                if (state.shiftPressed) shift[count].classList.add("active");
                 else shift.forEach(item => item.classList.remove("active"));
             } else if (char === "Caps") {
                 state.isCapsLock = !state.isCapsLock;
                 keyboardContainer.innerHTML = "";
-                keyboardContainer.appendChild(keyboard(state, state.isCapsLock));
+                keyboardContainer.appendChild(keyboard(state));
                 const caps = document.querySelector("[data-type=Caps]");
                 if (state.isCapsLock) caps.classList.add("active");
                 else caps.classList.remove("active");
@@ -77,13 +81,13 @@ export default function typing(state) {
                 ctrl.classList.remove("active");
             } else if (char === "Enter") {
                 textArea.setRangeText("\n", textArea.selectionStart, textArea.selectionEnd, "end");
-                ctrl.classList.remove("active");        
+                ctrl.classList.remove("active");
             } else if (char === "◄") {
-                textArea.setRangeText("", textArea.selectionStart-1, textArea.selectionEnd-1, "end");
-                ctrl.classList.remove("active");        
+                textArea.setRangeText("", textArea.selectionStart - 1, textArea.selectionEnd - 1, "end");
+                ctrl.classList.remove("active");
             } else if (char === "►") {
-                textArea.setRangeText("", textArea.selectionStart+1, textArea.selectionEnd+1, "end");
-                ctrl.classList.remove("active");      
+                textArea.setRangeText("", textArea.selectionStart + 1, textArea.selectionEnd + 1, "end");
+                ctrl.classList.remove("active");
             } else if (char === "▲") {
                 let value = textArea.value;
                 let pos = textArea.selectionStart;
@@ -92,16 +96,16 @@ export default function typing(state) {
                 for (let i = pos - 1; i >= 0; i--) {
                     if (posFromStrBegin === undefined && value[i] === "\n") {
                         posFromStrBegin = i;
-                    }else  if (nextPosition === undefined && (value[i] === "\n" || i === 0)) {
+                    } else if (nextPosition === undefined && (value[i] === "\n" || i === 0)) {
                         nextPosition = i === 0 ? -1 : i;
                     }
                 }
                 posFromStrBegin = posFromStrBegin ?? 0;
-                nextPosition = nextPosition ?? 0;          
+                nextPosition = nextPosition ?? 0;
                 let newPosition = nextPosition + (pos - posFromStrBegin);
-                newPosition = newPosition >= posFromStrBegin ? posFromStrBegin  : newPosition;
+                newPosition = newPosition >= posFromStrBegin ? posFromStrBegin : newPosition;
                 textArea.setRangeText("", newPosition, newPosition, "end");
-                ctrl.classList.remove("active");      
+                ctrl.classList.remove("active");
             } else if (char === "▼") {
                 let value = textArea.value;
                 let pos = textArea.selectionStart;
@@ -112,11 +116,11 @@ export default function typing(state) {
                         posFromStrBegin = i === 0 ? -1 : i;
                     }
                 }
-                posFromStrBegin = posFromStrBegin ?? -1;          
+                posFromStrBegin = posFromStrBegin ?? -1;
                 let newPosition = nextPosition >= 0 ? nextPosition + (pos - posFromStrBegin) : value.length;
                 newPosition = newPosition >= value.length ? value.length : newPosition;
                 textArea.setRangeText("", newPosition, newPosition, "end");
-                ctrl.classList.remove("active");      
+                ctrl.classList.remove("active");
             }
             textArea.focus();
         }

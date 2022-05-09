@@ -1,8 +1,8 @@
-import State from "./state";
-import keyboard from "./keyboard";
-import typing from "./typing";
-import realKeyboard from "./real-keyboard";
-import "./style.css";
+import State from "./state/state";
+import keyboard from "./keyboard-render";
+import typing from "./mouse-typing";
+import realKeyboard from "./real-keyboard-typing";
+import "./styles/style.css";
 
 const state = new State();
 let layout = localStorage.getItem("layout");
@@ -21,6 +21,7 @@ function renderCanvas() {
     container.appendChild(textArea);
     const keyboardContainer = document.createElement("div");
     keyboardContainer.className = "keyboard-container";
+    
     keyboardContainer.appendChild(keyboard(state));
     container.appendChild(keyboardContainer);
     const footer = document.createElement("div");
