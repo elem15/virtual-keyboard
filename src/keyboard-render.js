@@ -13,6 +13,7 @@ export default function keyboard(state) {
             }
             if (item === "Backslash") button.innerText = "\u005C";
             else if (item === "Quote") button.innerText = '"';
+            else if (item === "QuoteRus") button.innerText = '"';
             else button.innerText = item;
             button.setAttribute("data-type", item);
             button.classList.add(item);

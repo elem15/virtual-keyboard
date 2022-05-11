@@ -52,41 +52,54 @@ export default function (state) {
             const button = document.querySelector("[data-type=Quote]");
             button.classList.add("clicked");
             textArea.setRangeText('"', textArea.selectionStart, textArea.selectionEnd, "end");
+        } else if (e.code === "QuoteRus" && state.register === "upper" && state.layout === "russian") {
+            e.preventDefault();
+            const button = document.querySelector("[data-type=Quote]");
+            button.classList.add("clicked");
+            textArea.setRangeText('"', textArea.selectionStart, textArea.selectionEnd, "end");
         } else if (e.code === "ShiftLeft" || (e.code !== "ShiftLeft" && e.key === "Shift")) {
-            let register = state.getRegister() === "lower" ? "upper" : "lower";
-            state.setRegister(register);
-            keyboardContainer.innerHTML = "";
-            keyboardContainer.appendChild(keyboard(state));
-            const shift = document.querySelectorAll("[data-type=Shift]");
-            state.shiftPressed = !state.shiftPressed;
-            const caps = document.querySelector("[data-type=Caps]");
-            if (state.isCapsLock) caps.classList.add("active");
-            if (e.code === "ShiftLeft") {
-                if (state.shiftPressed) shift[0].classList.add("active");
-                else {
-                    shift[0].classList.remove("active");
-                    shift[1].classList.remove("active");
+            if (e.repeat === false) {
+                let register = state.getRegister() === "lower" ? "upper" : "lower";
+                state.setRegister(register);
+                keyboardContainer.innerHTML = "";
+                keyboardContainer.appendChild(keyboard(state));
+                const shift = document.querySelectorAll("[data-type=Shift]");
+                state.shiftPressed = !state.shiftPressed;
+                const caps = document.querySelector("[data-type=Caps]");
+                if (state.isCapsLock) caps.classList.add("active");
+                if (e.code === "ShiftLeft") {
+                    if (state.shiftPressed) shift[0].classList.add("active");
+                    else {
+                        shift[0].classList.remove("active");
+                        shift[1].classList.remove("active");
+                    }
+                } else {
+                    if (state.shiftPressed) shift[1].classList.add("active");
+                    else {
+                        shift[0].classList.remove("active");
+                        shift[1].classList.remove("active");
+                    }
                 }
             } else {
-                if (state.shiftPressed) shift[1].classList.add("active");
-                else {
-                    shift[0].classList.remove("active");
-                    shift[1].classList.remove("active");
-                }
+                state.shiftIsHold = true;
             }
         } else if (Object.keys(keyList).includes(e.code)) {
             e.preventDefault();
-            const button = document.querySelector(`[data-type="${key[0]}"]`)
+            let button = document.querySelector(`[data-type="${key[0]}"]`)
                 ?? document.querySelector(`[data-type="${key[1]}"]`)
                 ?? document.querySelector(`[data-type="${key[2]}"]`)
                 ?? document.querySelector(`[data-type="${key[3]}"]`);
-            button.classList.add("clicked");
             let char = button.getAttribute("data-type");
+            if (e.code === "Digit2" && state.layout === "russian" && state.register === "upper") {
+                char = '"';
+            }
             if (e.code === "Slash" && state.layout === "russian" && state.register === "upper") {
                 char = ",";
+                button = document.querySelector("[data-type=',']");
             }
+            button.classList.add("clicked");
             textArea.setRangeText(char, textArea.selectionStart, textArea.selectionEnd, "end");
-            if (state.shiftPressed === true) {
+            if (state.shiftPressed === true && state.shiftIsHold === false) {
                 state.shiftPressed = !state.shiftPressed;
                 let register = state.getRegister() === "lower" ? "upper" : "lower";
                 state.setRegister(register);
@@ -108,6 +121,16 @@ export default function (state) {
         }
         if (e.code === "ControlRight") {
             const button = document.querySelectorAll("." + key)[1];
+            button.classList.remove("clicked");
+        }
+        if (e.key === "Shift" && state.getRegister() === "upper") {
+            state.shiftIsHold = false;
+            state.setRegister("lower");
+            keyboardContainer.innerHTML = "";
+            keyboardContainer.appendChild(keyboard(state));
+        }
+        if (e.code === "Slash" && state.layout === "russian" && state.register === "upper") {           
+            const button = document.querySelector("[data-type=',']");
             button.classList.remove("clicked");
         }
         if (Object.keys(keyList).includes(e.code)) {
