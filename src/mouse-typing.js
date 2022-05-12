@@ -77,6 +77,9 @@ export default function typing(state) {
             } else if (char === "Quote") {
                 textArea.setRangeText('"', textArea.selectionStart, textArea.selectionEnd, "end");
                 ctrl.classList.remove("active");
+            } else if (char === "QuoteRus") {
+                textArea.setRangeText('"', textArea.selectionStart, textArea.selectionEnd, "end");
+                ctrl.classList.remove("active");
             } else if (char === "Whitespace") {
                 textArea.setRangeText(" ", textArea.selectionStart, textArea.selectionEnd, "end");
                 ctrl.classList.remove("active");

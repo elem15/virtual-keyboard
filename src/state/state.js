@@ -5,6 +5,7 @@ export default class {
         this.isCapsLock = false;
         this.shiftPressed = false;
         this.ctrlPressed = false;
+        this.shiftIsHold = false;
     }
     setLayout(layout) {
         this.layout = layout;
@@ -80,7 +81,7 @@ export default class {
             "◄", "▼", "►", "Ctrl"
         ],
         upper: [
-            "Ё", "!", '"', "№",
+            "Ё", "!", "QuoteRus", "№",
             ";", "%", ":", "?",
             "*", "(", ")", "_",
             "+", "Backspace", "Tab", "Й",
